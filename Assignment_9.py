@@ -222,38 +222,41 @@ class TempDataset:
         Load temp data from CSV file
         """
         try:
-            file = open(filename, "r")
-        except:
+            with open(filename, "r") as file:
+                self._data_set = []
+
+                for line in file:
+                    line = line.strip()
+                    if not line:
+                        continue
+
+                    try:
+                        parts = line.split(",")
+                        if len(parts) != 5:
+                            continue
+
+                        day = int(parts[0])
+                        time_float = float(parts[1])
+                        sensor = int(parts[2])
+                        reading_type = parts[3]
+                        value = float(parts[4])
+
+                        if reading_type != "TEMP":
+                            continue
+
+                        hour = math.floor(time_float * 24)
+
+                        self._data_set.append((day, hour, sensor, value))
+                    except ValueError:
+                        continue
+            return True
+
+        except FileNotFoundError:
+            return False
+        except Exception:
             return False
 
-        self._data_set = []
 
-        for line in file:
-            line = line.strip()
-            if not line:
-                continue
-
-
-            parts = line.split(",")
-            if len(parts) != 5:
-                continue
-
-
-            day = int(parts[0])
-            time_float = float(parts[1])
-            sensor = int(parts[2])
-            reading_type = parts[3]
-            value = float(parts[4])
-
-            if reading_type != "TEMP":
-                continue
-
-            hour = math.floor(time_float * 24)
-
-            self._data_set.append((day, hour, sensor, value))
-
-        file.close()
-        return True
 
 
     def get_loaded_temps(self):
@@ -335,8 +338,13 @@ def main():
     These are the None values 
     """
     dataset = TempDataset()
-    #sensor_list = None
-    #active_sensors = None
+
+    active_sensors = filter_list
+
+
+
+
+
     """
     The loop is going to keep running until the users chooses 7 so that it can quit
     """
@@ -375,19 +383,7 @@ def main():
 
 
 
-    celsius_value = float(input("Please enter the temperature in Celsius: \n"))
-    units = int(input("Please enter the conversion: 0 = Celsius, 1 = Fahrenheit, 2 = Kelvin: "))
 
-
-    converted_temp = convert_units(celsius_value, units)
-
-
-    if units == 0:
-        print(f"That's {converted_temp:.2f} degrees Celsius.")
-    elif units == 1:
-        print(f"That's {converted_temp:.2f} degrees Fahrenheit.")
-    elif units == 2:
-        print(f"That's {converted_temp:.2f} degrees Kelvin.")
 """
 The sensors dictionary for the different sensors
 """
@@ -450,7 +446,94 @@ else:
     print("Fail")
 
 
+    celsius_value = float(input("Please enter the temperature in Celsius: \n"))
+    units = int(input("Please enter the conversion: 0 = Celsius, 1 = Fahrenheit, 2 = Kelvin: "))
+
+    converted_temp = convert_units(celsius_value, units)
+
+    if units == 0:
+        print(f"That's {converted_temp:.2f} degrees Celsius.")
+    elif units == 1:
+        print(f"That's {converted_temp:.2f} degrees Fahrenheit.")
+    elif units == 2:
+        print(f"That's {converted_temp:.2f} degrees Kelvin.")
 
 
 if __name__ == "__main__":
     main()
+
+r"""
+C:\Users\Jonat\PycharmProjects\CybersecurityProjects\.venv\Scripts\python.exe C:\Users\Jonat\PycharmProjects\CybersecurityProjects\Assignment_9.py 
+
+Original unsorted list
+ [('4213', 'STEM Center', 0), ('4201', 'Foundations Lab', 1), ('4204', 'CS Lab', 2), ('4218', 'Workshop Room', 3), ('4205', 'Tiled Room', 4), ('Out', 'Outside', 5)]
+
+List sorted by room number
+ [('4201', 'Foundations Lab', 1), ('4204', 'CS Lab', 2), ('4205', 'Tiled Room', 4), ('4213', 'STEM Center', 0), ('4218', 'Workshop Room', 3), ('Out', 'Outside', 5)]
+
+List sorted by room name
+ [('4204', 'CS Lab', 2), ('4201', 'Foundations Lab', 1), ('Out', 'Outside', 5), ('4213', 'STEM Center', 0), ('4205', 'Tiled Room', 4), ('4218', 'Workshop Room', 3)]
+
+Original unsorted list
+ [('4213', 'STEM Center', 0), ('4201', 'Foundations Lab', 1), ('4204', 'CS Lab', 2), ('4218', 'Workshop Room', 3), ('4205', 'Tiled Room', 4), ('Out', 'Outside', 5)]
+Testing sensors: 
+Pass
+Testing sensor_list length: 
+Pass
+Testing sensor_list content: 
+Pass
+Testing filter_list length:
+Pass
+Testing filter_list content: 
+Pass
+STEM Center Temperature Project
+Jonathan Lopez
+
+Main Menu
+----------
+1 - Process a new data file
+2 - Choose units
+3 - Edit room filter
+4 - Show summary statistics
+5 - Show temperature by data and time
+6 - Show histogram of temperatures
+7 - Quit
+what is your choice? 1
+Please enter the filename of the new dataset: Temperatures_2025-11-07.csv
+Loaded 11724 samples
+
+Please provide a 3 to 20 character name for the dataset: z
+Invalid name. Please try again
+Please provide a 3 to 20 character name for the dataset: jonathanjonathanjonathanjonathan
+Invalid name. Please try again
+Please provide a 3 to 20 character name for the dataset: jonathansdata.csv
+
+Main Menu
+----------
+1 - Process a new data file
+2 - Choose units
+3 - Edit room filter
+4 - Show summary statistics
+5 - Show temperature by data and time
+6 - Show histogram of temperatures
+7 - Quit
+what is your choice? 1
+Please enter the filename of the new dataset: Myjonathandata
+Unable to load file
+
+Main Menu
+----------
+1 - Process a new data file
+2 - Choose units
+3 - Edit room filter
+4 - Show summary statistics
+5 - Show temperature by data and time
+6 - Show histogram of temperatures
+7 - Quit
+what is your choice? 7
+Thank you for using the STEM Center Temperature Project
+
+
+Process finished with exit code 0
+
+"""
