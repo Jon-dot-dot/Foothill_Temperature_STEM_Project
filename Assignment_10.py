@@ -43,7 +43,7 @@ def choose_unit():
 
     while True:
         print("Choose new unit:")
-        for key in UNITS
+        for key in UNITS:
             print(f"{key} - {UNITS[key][0]}")
         print()
 
@@ -65,6 +65,7 @@ def choose_unit():
 
 
         current_unit = choice
+        print(f"Unit is now {UNITS[current_unit][0]}\n")
         break
 
 
@@ -339,7 +340,8 @@ class TempDataset:
 
         temps = [
             row[3]
-            for row in self._data_setif row[2] in filter_list and row[0] == day and row[1] == time
+            for row in self._data_set
+            if row[2] in filter_list and row[0] == day and row[1] == time
         ]
         return None if not temps else sum(temps) / len(temps)
 
@@ -520,78 +522,3 @@ else:
 if __name__ == "__main__":
     main()
 
-r"""
-C:\Users\Jonat\PycharmProjects\CybersecurityProjects\.venv\Scripts\python.exe C:\Users\Jonat\PycharmProjects\CybersecurityProjects\Assignment_9.py 
-
-Original unsorted list
- [('4213', 'STEM Center', 0), ('4201', 'Foundations Lab', 1), ('4204', 'CS Lab', 2), ('4218', 'Workshop Room', 3), ('4205', 'Tiled Room', 4), ('Out', 'Outside', 5)]
-
-List sorted by room number
- [('4201', 'Foundations Lab', 1), ('4204', 'CS Lab', 2), ('4205', 'Tiled Room', 4), ('4213', 'STEM Center', 0), ('4218', 'Workshop Room', 3), ('Out', 'Outside', 5)]
-
-List sorted by room name
- [('4204', 'CS Lab', 2), ('4201', 'Foundations Lab', 1), ('Out', 'Outside', 5), ('4213', 'STEM Center', 0), ('4205', 'Tiled Room', 4), ('4218', 'Workshop Room', 3)]
-
-Original unsorted list
- [('4213', 'STEM Center', 0), ('4201', 'Foundations Lab', 1), ('4204', 'CS Lab', 2), ('4218', 'Workshop Room', 3), ('4205', 'Tiled Room', 4), ('Out', 'Outside', 5)]
-Testing sensors: 
-Pass
-Testing sensor_list length: 
-Pass
-Testing sensor_list content: 
-Pass
-Testing filter_list length:
-Pass
-Testing filter_list content: 
-Pass
-STEM Center Temperature Project
-Jonathan Lopez
-
-Main Menu
-----------
-1 - Process a new data file
-2 - Choose units
-3 - Edit room filter
-4 - Show summary statistics
-5 - Show temperature by data and time
-6 - Show histogram of temperatures
-7 - Quit
-what is your choice? 1
-Please enter the filename of the new dataset: Temperatures_2025-11-07.csv
-Loaded 11724 samples
-
-Please provide a 3 to 20 character name for the dataset: z
-Invalid name. Please try again
-Please provide a 3 to 20 character name for the dataset: jonathanjonathanjonathanjonathan
-Invalid name. Please try again
-Please provide a 3 to 20 character name for the dataset: jonathansdata.csv
-
-Main Menu
-----------
-1 - Process a new data file
-2 - Choose units
-3 - Edit room filter
-4 - Show summary statistics
-5 - Show temperature by data and time
-6 - Show histogram of temperatures
-7 - Quit
-what is your choice? 1
-Please enter the filename of the new dataset: Myjonathandata
-Unable to load file
-
-Main Menu
-----------
-1 - Process a new data file
-2 - Choose units
-3 - Edit room filter
-4 - Show summary statistics
-5 - Show temperature by data and time
-6 - Show histogram of temperatures
-7 - Quit
-what is your choice? 7
-Thank you for using the STEM Center Temperature Project
-
-
-Process finished with exit code 0
-
-"""
